@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 from loguru import logger
 
+from logger_config import config
+
 
 env_path = os.path.join(os.path.dirname(__file__), '.env')
 if os.path.exists(env_path):
@@ -10,3 +12,6 @@ if os.path.exists(env_path):
 
 # Discord client
 BOT_TOKEN = os.getenv('BOT_TOKEN')
+
+# logger
+logger.configure(**config)

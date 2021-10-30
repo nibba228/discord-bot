@@ -17,7 +17,7 @@ class BotClient(Client):
 
     async def on_message(self, message):
         '''
-        С вероятностью 0.05 анализирует сообщение, ищет в нем существительные,
+        С каким-то шансом анализирует сообщение, ищет в нем существительные,
         и, если они есть, то отправляет сообщение "*сущ. в им. п. мн. ч.* для пидоров"
         '''
 
@@ -31,7 +31,7 @@ class BotClient(Client):
         elif self._is_appeal(message):
             await message.channel.send(random.choice(['Извините', 'Простите']))
 
-        elif random.randint(1, 100) in range(1, 6):
+        elif random.random() == 0.3974: # random float
             nouns = self._find_nouns(message)
             if nouns:
                 await message.channel.send(f'{random.choice(nouns)} для пидоров'.capitalize())
@@ -45,8 +45,8 @@ class BotClient(Client):
         raise
 
     def _is_appeal(self, message):
-        appeal = set(message.content.lower().split())
-        return appeal == {'извинись', 'бот'} or appeal == {'извиняйся', 'бот'}    
+        appeal = set([w.strip('.,') for w in message.content.lower().split()])
+        return {'извинись', 'бот'} <= appeal or {'извиняйся', 'бот'} <= appeal
 
     def _find_nouns(self, message):
         nouns = []
@@ -56,7 +56,9 @@ class BotClient(Client):
             parsed = self.morph.parse(word)[0]
             
             # is noun but is not a name, surname or patronymic
-            if len(parsed.word) > 3 and 'NOUN' in parsed.tag and ('Name', 'Surn', 'Patr') not in parsed.tag:
+            if len(parsed.word) > 3 and 'NOUN' in parsed.tag \
+               and 'Name' not in parsed.tag and 'Surn' not in parsed.tag \
+               and 'Patr' not in parsed.tag:
                 inflected = parsed.inflect({'nomn', 'plur'})
                 if inflected:
                     nouns.append(inflected.word)
