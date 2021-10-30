@@ -31,7 +31,7 @@ class BotClient(Client):
         elif self._is_appeal(message):
             await message.channel.send(random.choice(['Извините', 'Простите']))
 
-        elif random.random() == 0.3974: # random float
+        elif int(random.random()) * 1000 == 397: # random float
             nouns = self._find_nouns(message)
             if nouns:
                 await message.channel.send(f'{random.choice(nouns)} для пидоров'.capitalize())
