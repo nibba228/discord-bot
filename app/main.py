@@ -1,7 +1,7 @@
 from client import BotClient
-from loader import BOT_TOKEN
+from config.app import Config
 
 
 if __name__ == '__main__':
     client = BotClient()
-    client.run(BOT_TOKEN)
+    client.run(Config.BOT_TOKEN)
