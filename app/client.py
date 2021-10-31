@@ -4,7 +4,7 @@ import sys
 from discord import Client
 from pymorphy2 import MorphAnalyzer
 
-from loader import logger
+from config.app import logger
 
 
 class BotClient(Client):
